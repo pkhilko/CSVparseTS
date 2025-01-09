@@ -1,0 +1,11 @@
+id,name,age,country,score,joined_date,active
+1,John Doe,28,USA,450,2021-05-22,true
+2,Jane Smith,34,Canada,300,2020-03-12,false
+3,Samuel Brown,22,UK,510,2022-07-15,true
+4,Emily Davis,40,Australia,600,2019-11-30,true
+5,Michael Johnson,28,USA,330,2021-01-05,true
+6,Jessica Williams,19,Canada,410,2023-01-10,false
+7,David Martinez,55,Spain,700,2018-04-25,true
+8,Alice Lee,30,USA,620,2020-08-17,true
+9,James Harris,45,Australia,510,2019-12-02,false
+10,Laura Clark,27,UK,450,2022-09-09,true
