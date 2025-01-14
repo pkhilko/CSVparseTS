@@ -1,6 +1,7 @@
 import { parseCSV } from "./utils/csvParser";
 import { executeQuery } from "./engine/queryEngine";
 import { DataRow } from "./models/types";
+import { runRepl } from "./repl";
 
 function loadCSV(filePath: string): DataRow[] {
   const rows = parseCSV(filePath);
@@ -18,11 +19,15 @@ function loadCSV(filePath: string): DataRow[] {
   });
 }
 
-// Entry Point
-const filePath = "./sample_data2.csv"; // Path to your CSV file
-const data = loadCSV(filePath);
+const main = () => {
+  // TODO:
+  // 1. Take filename from CLI argument 🚧
+  const filePath = "./src/sample_data2.csv";
+  // 2. Parse CSV file 🚧
+  const data = loadCSV(filePath);
+  // 3. Run REPL ✅
+  runRepl(data);
+  // PROJECT name FILTER age > 30"
+};
 
-// Sample queries
-const query = "PROJECT name FILTER age > 30";
-const result = executeQuery(data, query);
-console.log(result);
+main();
