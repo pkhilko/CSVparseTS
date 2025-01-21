@@ -7,7 +7,9 @@ export function executeQuery(data: DataRow[], query: string): DataRow[] {
   const projections = parseProjection(projectPart);
 
   // Parse filter condition (e.g., col3 > "value")
-  const filterCondition = filterPart ? parseFilter(filterPart.trim()) : null;
+  const filterCondition = filterPart
+    ? parseFilter(filterPart.trim(), data)
+    : null;
 
   // Filter the data if filterCondition exists
   let filteredData = filterCondition
@@ -25,13 +27,30 @@ function parseProjection(projectionPart: string): string[] {
     .map((col) => col.trim());
 }
 
-function parseFilter(filterPart: string): FilterCondition {
-  const [column, operatorValue] = filterPart.split(">");
-  const operator = ">";
-  const value = operatorValue.trim().replace(/^"|"$/g, ""); // Remove quotes around string values
+function parseFilter(filterPart: string, data: DataRow[]): FilterCondition {
+  // Identify operator and split accordingly
+  const operatorMatch = filterPart.match(/(>=|<=|!=|>|<|=)/);
+
+  if (!operatorMatch) {
+    throw new Error("Invalid filter condition");
+  }
+
+  const operator = operatorMatch[0];
+  const [column, valuePart] = filterPart.split(operator);
+  const value = valuePart.trim().replace(/^"|"$/g, ""); // Remove quotes
+
+  // column,csv data
+
+  if (!data[0].hasOwnProperty(column.trim())) {
+    throw new Error("Invalid filter condition");
+  }
+
+  // const data = [{name:"filip",age:12},{name:"te",age:123}]
+  // const column = "name"
+
   return {
     column: column.trim(),
-    value: isNaN(Number(value)) ? value : Number(value),
+    value: isNaN(Number(value)) ? value : Number(value), // Convert numeric values
     operator,
   };
 }
@@ -39,11 +58,22 @@ function parseFilter(filterPart: string): FilterCondition {
 function evaluateFilter(item: DataRow, filter: FilterCondition): boolean {
   const itemValue = item[filter.column];
 
-  if (filter.operator === ">") {
-    return itemValue > filter.value;
+  switch (filter.operator) {
+    case ">":
+      return itemValue > filter.value;
+    case "<":
+      return itemValue < filter.value;
+    case "=":
+      return itemValue == filter.value; // Loose equality
+    case "!=":
+      return itemValue != filter.value; // Not equal
+    case ">=":
+      return itemValue >= filter.value;
+    case "<=":
+      return itemValue <= filter.value;
+    default:
+      throw new Error(`Unsupported operator: ${filter.operator}`);
   }
-
-  return false;
 }
 
 function projectData(item: DataRow, projections: string[]): DataRow {

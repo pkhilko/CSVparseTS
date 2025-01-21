@@ -2,7 +2,8 @@
   "name": "csv-query-engine",
   "version": "1.0.0",
   "scripts": {
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "test": "vitest"
   },
   "dependencies": {
     "typescript": "^5.0.0"
@@ -10,6 +11,7 @@
   "devDependencies": {
     "@types/node": "^22.10.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.0"
   }
 }
