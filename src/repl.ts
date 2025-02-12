@@ -1,9 +1,9 @@
 import * as readline from "readline";
 import { executeQuery } from "./engine/queryEngine";
-import { DataRow } from "./models/types";
+import { DataRow, ColumnTypeMap } from "./models/types";
 
 // Creates REPL user interface, takes over the control of the terminal, handles user input
-export const runRepl = (data: DataRow[]): void => {
+export const runRepl = (data: DataRow[], dataTypes: ColumnTypeMap): void => {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -21,7 +21,10 @@ export const runRepl = (data: DataRow[]): void => {
 
     try {
       console.log("Input is = ", input);
-      console.log(executeQuery(data, input));
+      // console.log(executeQuery(data, input));
+      // = same as 👇
+      const result = executeQuery(data, input, dataTypes);
+      console.log(result);
     } catch (err) {
       console.error(`Error: `, err);
     }
